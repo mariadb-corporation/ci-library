@@ -9,7 +9,7 @@ def call(label) {
 
     case "sles-12":
     case "sles-15":
-      retry(10) { sh "sudo zypper -n update" }
+      sh "sudo zypper -n update || true"
       break
 
     case "rhel-6":

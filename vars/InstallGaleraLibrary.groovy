@@ -3,7 +3,7 @@
 def call(label) {
 assert label != null
 
-def minorVersion = "${env.MYSQL_VERSION_MINOR}".toInteger()
+def minorVersion = "${currentVersion.MYSQL_VERSION_MINOR}"
 def galeraVersion
 def galeraPkgNames
 def galeraUrl
