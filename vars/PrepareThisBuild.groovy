@@ -10,8 +10,7 @@ def call() {
   currentBuild.displayName = "#${BUILD_NUMBER}: ${GIT_BRANCH}"
   currentBuild.description = "Revision: ${GIT_COMMIT}"
 
-  def currentVersion = readProperties file: 'VERSION'
-  echo currentVersion
+  currentVersion = readProperties file: 'VERSION', interpolate: true
 
   shortVersion = "${currentVersion.MYSQL_VERSION_MAJOR}.${currentVersion.MYSQL_VERSION_MINOR}"
   fullVersion = "${shortVersion}.${currentVersion.MYSQL_VERSION_PATCH}${currentVersion.MYSQL_VERSION_EXTRA}"
