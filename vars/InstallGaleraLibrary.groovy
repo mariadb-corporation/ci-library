@@ -1,9 +1,9 @@
 #!/usr/bin/env groovy
 
-def call(label) {
+def call(label, minorVersion) {
 assert label != null
+assert minorVersion != null
 
-def minorVersion = "${currentVersion.MYSQL_VERSION_MINOR}"
 def galeraVersion
 def galeraPkgNames
 def galeraUrl
