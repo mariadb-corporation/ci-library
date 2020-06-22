@@ -10,12 +10,10 @@ def call() {
   currentBuild.displayName = "#${BUILD_NUMBER}: ${GIT_BRANCH}"
   currentBuild.description = "Revision: ${GIT_COMMIT}"
 
-  assert currentCommit  != null
-  assert currentBranch  != null
-  assert currentVersion != null
-
-  assert shortVersion   != null
-  assert fullVersion    != null
-  assert serverMaturity != null
+  currentVersion = readProperties file: 'VERSION', interpolate: true
+  minorVersion = currentVersion.['MYSQL_VERSION_MINOR']
+  shortVersion = currentVersion['MYSQL_VERSION_MAJOR'] + '.' + currentVersion['MYSQL_VERSION_MINOR']
+  fullVersion = shortVersion + '.' + currentVersion['MYSQL_VERSION_PATCH'] + currentVersion['MYSQL_VERSION_EXTRA']
+  serverMaturity = currentVersion['SERVER_MATURITY']
 
 }
