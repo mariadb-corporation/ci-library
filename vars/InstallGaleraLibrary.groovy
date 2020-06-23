@@ -11,15 +11,15 @@ File repoFile
 def repoName = "Galera-Enterprise"
 
 switch (minorVersion) {
-  case 2:
-  case 3:
+  case "2":
+  case "3":
     galeraVersion = 3
     debPkgNames = "galera-3 galera-arbitrator-3"
     rpmPkgNames = "galera"
     break
-  case 4:
-  case 5:
-  case 6:
+  case "4":
+  case "5":
+  case "6":
     galeraVersion = 4
     debPkgNames = "galera-enterprise-4 galera-arbitrator-4"
     rpmPkgNames = "galera-enterprise-4"
