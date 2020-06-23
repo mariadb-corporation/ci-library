@@ -7,8 +7,8 @@ assert minorVersion != null
 def galeraVersion
 def galeraPkgNames
 def galeraUrl
-File repoFile
 def repoName = "Galera-Enterprise"
+def rhel8Fix = ""
 
 switch (minorVersion) {
   case "2":
@@ -37,9 +37,8 @@ switch (label) {
   case "ubuntu-1804":
   case "ubuntu-2004":
     galeraUrl = "http://repo/jenkins/DEVBUILDS/galera-${galeraVersion}/latest/apt ${label}/"
-    repoFile = new File("galera.list")
-    repoFile.write("deb [trusted=yes] ${galeraUrl}\n")
-    println repoFile.text
+    writeFile file: 'galera.list', text: "deb [trusted=yes] ${galeraUrl}"
+    sh "cat galera.list"
     sh "sudo mv -vf galera.list /etc/apt/sources.list.d/"
     sh "sudo apt-get update"
     sh "sudo apt-get -y install ${debPkgNames}"
@@ -49,15 +48,12 @@ switch (label) {
   case "rhel-7":
   case "rhel-8":
     galeraUrl = "http://repo/jenkins/DEVBUILDS/galera-${galeraVersion}/latest/rpm/${label}/"
-    repoFile = new File("galera.repo")
-    repoFile.write("[${repoName}]\n")
-    repoFile << "name=${repoName}\n"
-    repoFile << "baseurl=${galeraUrl}\n"
-    repoFile << "gpgcheck=0\n"
-    repoFile << "enable=1\n"
     if(label == "rhel-8") {
-      repoFile << "module_hotfixes=true\n"
+      rhel8Fix = "module_hotfixes=true"
     }
+    writeFile file: 'galera.repo', text: "[${repoName}]\nname=${repoName}\nbaseurl=${galeraUrl}\ngpgcheck=0\nenable=1\n${rhel8Fix}\n"
+    sh "cat galera.repo"
+    sh "sudo mv -vf galera.repo /etc/yum.repos.d/"
     sh "sudo yum install -y ${rpmPkgNames}"
     break
 
@@ -66,7 +62,7 @@ switch (label) {
     galeraUrl = "http://repo/jenkins/DEVBUILDS/galera-${galeraVersion}/latest/rpm/${label}"
     sh "sudo zypper ar -f -C ${galeraUrl} ${repoName}"
     sh "sudo zypper --no-gpg-checks refresh ||:"
-    sh "sudo zypper -n install --repo ${repoName} ${rpmPkgNames}"
+    sh "sudo zypper --no-gpg-checks -n install --repo ${repoName} ${rpmPkgNames}"
     break
 
   default:
