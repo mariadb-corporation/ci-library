@@ -8,7 +8,6 @@ def call(name, minorVersion, params) {
   def xmlReport = "mtr-${name}.xml"
   def dataTarball = "mtr-${name}.tar.gz"
   def mtrLogfile = "mtr-${name}.log"
-  def currentMtrParams
   def galeraLibraryName = 'libgalera_smm.so'
   def galeraLocation
   def myEnv = []
@@ -44,7 +43,7 @@ def call(name, minorVersion, params) {
     myEnv << "WSREP_PROVIDER=${galeraLocation}"
   } // if (name == 'galera')
 
-  currentMtrParams = params + " --parallel=${parallel} --xml-report=${xmlReport}"
+  String currentMtrParams = params + " --parallel=${parallel} --xml-report=${xmlReport}"
 
   echo "Running MTR with following parameters: ${currentMtrParams}..."
   sh "mkdir -p ${outdir}"
