@@ -1,17 +1,21 @@
 #!/usr/bin/env groovy
 
+import com.mariadb.es.Globals
+
+
 def call() {
 
   cleanWs()
   checkout scm
 
-  currentCommit = GIT_COMMIT
-  currentBranch = GIT_BRANCH
   currentBuild.displayName = "#${BUILD_NUMBER}: ${GIT_BRANCH}"
   currentBuild.description = "Revision: ${GIT_COMMIT}"
-  currentVersion = readProperties file: 'VERSION'
-  minorVersion = currentVersion.MYSQL_VERSION_MINOR
-  shortVersion = currentVersion.MYSQL_VERSION_MAJOR + '.' + currentVersion.MYSQL_VERSION_MINOR
-  fullVersion = shortVersion + '.' + currentVersion.MYSQL_VERSION_PATCH + currentVersion.MYSQL_VERSION_EXTRA
-  serverMaturity = currentVersion.SERVER_MATURITY
+
+  Globals.currentCommit = GIT_COMMIT
+  Globals.currentBranch = GIT_BRANCH
+  Globals.currentVersion = readProperties file: 'VERSION'
+  Globals.minorVersion   = Globals.currentVersion.MYSQL_VERSION_MINOR
+  Globals.shortVersion   = Globals.currentVersion.MYSQL_VERSION_MAJOR + '.' + Globals.currentVersion.MYSQL_VERSION_MINOR
+  Globals.fullVersion    = Globals.shortVersion + '.' + Globals.currentVersion.MYSQL_VERSION_PATCH + Globals.currentVersion.MYSQL_VERSION_EXTRA
+  Globals.serverMaturity = Globals.currentVersion.SERVER_MATURITY
 }
