@@ -18,7 +18,7 @@ def call(name, params) {
 
   cleanWs()
 
-  copyArtifacts filter: "${outdir}/*.tar.gz",
+  copyArtifacts filter: "${outdir}/mariadb-*.tar.gz",
     fingerprintArtifacts: true,
     flatten: true,
     projectName: '${JOB_NAME}',
@@ -34,7 +34,7 @@ def call(name, params) {
   myEnv << "PATH=${WORKSPACE}/bin:${env.PATH}"
 
   if (name == 'galera') {
-    parallel = ${env.NCPU}.toInteger() / 2
+    parallel = "${env.NCPU}".toInteger() / 2
     if(minorVersion.toInteger() > 3) {
       galeraLibraryName = 'libgalera_enterprise_smm.so'
     }
@@ -53,8 +53,8 @@ def call(name, params) {
   withEnv(myEnv) {
     sh "cd mysql-test && perl mysql-test-run.pl ${currentMtrParams} 2>&1 | tee ../${outdir}/${mtrLogfile} ||:"
   }
-  sh "tar czf ${outdir}/${dataTarball} ${mysqlVardir}/*"
+  sh "tar czf ${outdir}/${dataTarball} ${Globals.mysqlVardir}/*"
   sh "find mysql-test -name ${xmlReport} -exec cp -av '{}' ${outdir} \\;"
-  junit healthScaleFactor: 2.0, testResults: '*.xml'
+  junit healthScaleFactor: 2.0, testResults: "${outdir}/*.xml"
   archiveArtifacts "${outdir}/*"
 }
