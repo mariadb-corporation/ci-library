@@ -1,7 +1,9 @@
 #!/usr/bin/env groovy
 
-def call(cmakeParams) {
-  assert cmakeParams != null
+import com.mariadb.es.Globals
+
+def call() {
+
   def outdir = "bintar/${PLATFORM}"
   cleanWs()
 
@@ -15,7 +17,7 @@ def call(cmakeParams) {
   sh "mkdir -p ${outdir}"
   sh """
       [[ -f /opt/rh/devtoolset-3/enable ]] && source /opt/rh/devtoolset-3/enable
-      cmake . ${cmakeParams} 2>&1 | tee ${outdir}/${PLATFORM}-cmake.log
+      cmake . ${Globals.cmakeParams} 2>&1 | tee ${outdir}/${PLATFORM}-cmake.log
     """
   sh "make -j${env.NCPU} package 2>&1 | tee ${outdir}/${PLATFORM}-make.log"
   sh "mv -fv *.tar.gz ${outdir}"
