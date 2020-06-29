@@ -35,10 +35,10 @@ def call(name, params) {
 
   if (name == 'galera') {
     parallel = "${env.NCPU}".toInteger() / 2
-    if(minorVersion.toInteger() > 3) {
+    if(Globals.minorVersion.toInteger() > 3) {
       galeraLibraryName = 'libgalera_enterprise_smm.so'
     }
-    galeraLocation = sh(script: "find /usr -type f -name ${galeraLibraryName}", returnStdout: true).trim()
+    galeraLocation = sh(script: "sudo find /usr -type f -name ${galeraLibraryName}", returnStdout: true).trim()
     if (galeraLocation == null) {
       error "WSREP PROVIDER library not found!"
     }
