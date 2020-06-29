@@ -1,6 +1,8 @@
 #!/usr/bin/env groovy
 
-def call(name, minorVersion, params) {
+import com.mariadb.es.Globals
+
+def call(name, params) {
   assert name != null
   assert params != null
 
