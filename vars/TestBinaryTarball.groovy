@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-import com.mariadb.es.Globals
+import com.mariadb.es.Build
 
 def call(name, params) {
   assert name != null
@@ -35,7 +35,7 @@ def call(name, params) {
 
   if (name == 'galera') {
     parallel = "${env.NCPU}".toInteger() / 2
-    if(Globals.minorVersion.toInteger() > 3) {
+    if(Build.minorVersion.toInteger() > 3) {
       galeraLibraryName = 'libgalera_enterprise_smm.so'
     }
     galeraLocation = sh(script: "sudo find /usr -type f -name ${galeraLibraryName}", returnStdout: true).trim()
@@ -53,7 +53,7 @@ def call(name, params) {
   withEnv(myEnv) {
     sh "cd mysql-test && perl mysql-test-run.pl ${currentMtrParams} 2>&1 | tee ../${outdir}/${mtrLogfile} ||:"
   }
-  sh "tar czf ${outdir}/${dataTarball} ${Globals.mysqlVardir}/*"
+  sh "tar czf ${outdir}/${dataTarball} ${Build.mysqlVardir}/*"
   sh "find mysql-test -name ${xmlReport} -exec cp -av '{}' ${outdir} \\;"
   junit healthScaleFactor: 2.0, testResults: "${outdir}/*.xml"
   archiveArtifacts "${outdir}/*"

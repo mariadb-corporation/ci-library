@@ -1,6 +1,6 @@
 package com.mariadb.es
 
-class Globals {
+class Build {
   static currentCommit
   static currentBranch
   static currentVersion
@@ -11,4 +11,5 @@ class Globals {
   static cmakeParams = '-DBUILD_CONFIG=enterprise'
   static defaultMtrParams = "--force --vardir=${mysqlVardir}"
   final static  mysqlVardir = '/var/tmp/mtr'
+  final static buildsToKeep = '20'
 }
