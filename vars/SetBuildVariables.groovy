@@ -7,9 +7,6 @@ def call() {
   cleanWs()
   checkout scm
 
-  currentBuild.displayName = "#${BUILD_NUMBER}: ${GIT_BRANCH}"
-  currentBuild.description = "Revision: ${GIT_COMMIT}"
-
   Build.currentCommit = GIT_COMMIT
   Build.currentBranch = GIT_BRANCH
   Build.currentVersion = readProperties file: 'VERSION'
