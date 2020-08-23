@@ -17,29 +17,26 @@ def call() {
   Build.serverMaturity = Build.currentVersion.SERVER_MATURITY
 
   def changeLogSets = currentBuild.changeSets
-<<<<<<< HEAD
-  def entries = changeLogSets[changeLogSets.size() - 1].items
-  def entry = entries[entries.length - 1]
-
-||||||| parent of f824c3a... fixup! added variables for Slack notification
-  def entries = changeLogSets[changeLogSets.size()].items
-  def entry = entries[entries.length]
-=======
-  def entries = changeLogSets[changeLogSets.size() - 1].items
-<<<<<<< HEAD
-  def entry = entries[entries.length]
->>>>>>> f824c3a... fixup! added variables for Slack notification
-||||||| parent of 853d0d2... fixup! added variables for Slack notification
-  def entry = entries[entries.length]
-=======
-  def entry = entries[entries.length - 1]
->>>>>>> 853d0d2... fixup! added variables for Slack notification
-  echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-
-  def files = new ArrayList(entry.affectedFiles)
-
-  for (int k = 0; k < files.size(); k++) {
-    def file = files[k]
-      echo "  ${file.editType.name} ${file.path}"
+  if(changeLogSets.size() <= 0){
+    Build.changedFiles = 0
+    Build.changedFilesList = "No changes"
+    return
   }
+  def commiters = []
+  for (int i = 0; i < changeLogSets.size(); i++) {
+    def entries = changeLogSets[i].items
+    for (int j = 0; j < entries.length; j++) {
+        def entry = entries[j]
+        def files = new ArrayList(entry.affectedFiles)
+        Build.changedFilesList += "${entry.author}:\n\tCommit message:\n${entry.msg}\n\n"
+        commiters.add(entry.author.toString())
+        Build.changedFiles = files.size()
+        for (int k = 0; k < files.size(); k++) {
+            def file = files[k]
+            Build.changedFilesList += "\t${file.editType.name} ${file.path}\n"
+        }
+        Build.changedFilesList += "\n"
+    }
+  }
+  Build.commiterNames = commiters.unique().join(', ')
 }

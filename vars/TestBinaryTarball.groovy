@@ -6,6 +6,8 @@ def call(name, params) {
   assert name != null
   assert params != null
 
+  name = name.toLowerCase()
+
   def outdir = "bintar/${PLATFORM}"
   def xmlReport = "mtr-${name}.xml"
   def dataTarball = "mtr-${name}.tar.gz"
@@ -18,11 +20,8 @@ def call(name, params) {
 
   cleanWs()
 
-  copyArtifacts filter: "${outdir}/mariadb-*.tar.gz",
-    fingerprintArtifacts: true,
-    flatten: true,
-    projectName: '${JOB_NAME}',
-    selector: specific('${BUILD_NUMBER}')
+  copyArtifacts filter: "${outdir}/mariadb-*.tar.gz", fingerprintArtifacts: true,
+    flatten: true, projectName: 'MariaDB-Enterprise-BINTAR', selector: specific("${BINTAR_BUILD_NUMBER}")
 
   sh 'tar xf mariadb-*.tar.gz --strip-components=1'
   sh 'rm -fv mariadb-*.tar.gz'
