@@ -4,7 +4,8 @@ import com.mariadb.es.Build
 
 def call() {
 
-  cleanWs()
+// TODO uncomment
+//  cleanWs()
   checkout scm
 
   Build.currentCommit = GIT_COMMIT
