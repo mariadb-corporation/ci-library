@@ -8,6 +8,7 @@ def call() {
 
   cleanWs()
   checkout scm
+  setBuildName()
 //  def causes = currentBuild.getBuildCauses()
 //  echo "${causes}"
 

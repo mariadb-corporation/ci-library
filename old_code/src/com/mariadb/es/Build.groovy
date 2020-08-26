@@ -14,10 +14,10 @@ class Build {
   static shortVersion
   static fullVersion
   static serverMaturity
-  static cmakeParams = '-DBUILD_CONFIG=enterprise'
+
   static defaultMtrParams = "--force --max-test-fail=0 --testcase-timeout=120 --vardir=${mysqlVardir}"
   final static mysqlVardir = '/var/tmp/mtr'
-  final static slackChannel = '#build-status'
+
   static slackResponse
   static buildinfo
 }
