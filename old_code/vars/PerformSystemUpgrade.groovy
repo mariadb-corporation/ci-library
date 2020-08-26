@@ -26,7 +26,7 @@ def call(label) {
     case "ubuntu-2004":
       retry(5) {
         sh "until sudo apt-get update; do sleep 10; done"
-        sh "until sudo apt-get -y upgrade; do sleep 10; done"
+        sh "sudo apt-get -y upgrade"
         sh "sudo apt-get -y autoremove"
       }
       break

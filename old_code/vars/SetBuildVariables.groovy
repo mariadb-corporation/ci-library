@@ -16,6 +16,10 @@ def call() {
   Build.fullVersion    = Build.shortVersion + '.' + Build.currentVersion.MYSQL_VERSION_PATCH + Build.currentVersion.MYSQL_VERSION_EXTRA
   Build.serverMaturity = Build.currentVersion.SERVER_MATURITY
 
+  File propfile = new File(Build.buildinfo)
+  propfile.write("GIT_COMMIT=${Build.currentCommit}")
+
+
   def changeLogSets = currentBuild.changeSets
   if(changeLogSets.size() <= 0){
     Build.changedFiles = 0
