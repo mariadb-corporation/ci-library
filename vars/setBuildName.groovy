@@ -2,7 +2,7 @@
 
 import com.mariadb.es.Build
 
-def call() {
-  currentBuild.displayName = "#${BUILD_NUMBER}: ${GIT_BRANCH}"
-  currentBuild.description = "Revision: ${GIT_COMMIT}"
+def call(branch, commit) {
+  currentBuild.displayName = "#${BUILD_NUMBER}: ${branch}"
+  currentBuild.description = "Revision: ${commit}"
 }
